@@ -1,83 +1,48 @@
-# TECHPULSE 2027 • Cybertron Robotics Tech Fest
+# TECHPULSE 2027 Registration Portal
 
-> **Where Future Robotics & Next-Gen Innovators Collide**  
-> Official Delegate & Competition Enrollment Portal for the premier robotics & tech festival in South 24 Parganas, Kolkata. Powered by **5 Point Education** & **Kranti Foundation**.
+A responsive visitor, participant and event-operations portal for TECHPULSE 2027. The implementation follows the supplied UI/UX proposal: cyan visitor journeys, magenta participant journeys, Excel bulk registration, organiser approval, personal dashboards, QR passes and daily check-in.
 
----
+## Run locally
 
-## ⚡ Features & Highlights
+Requires Node.js 20 or newer.
 
-- **Transformers Cybertron Design System**:
-  - Energon Cyan (`#00f0ff`), AllSpark Amber (`#ffb700`), and Decepticon Violet (`#bd34fe`) neon aesthetics.
-  - Interactive **Autobot Alliance** vs. **Decepticon Reign** faction protocol switcher.
-  - Built-in **Web Audio API sound synthesizer** for authentic Transformers servo transforms, metallic clicks, and HUD telemetry beeps without external sound dependencies.
-  - 3D rotating **AllSpark Matrix cube loader**.
-
-- **Surveillance Theater Video Reel**:
-  - Interactive multi-feed sci-fi video player showcasing tactical drone arenas, delegate walkthroughs, technology exhibition stalls, and high-speed line followers.
-
-- **7+ Battle Arenas & Competitions**:
-  - `01 FAST-TRACK` — Robo Race (Obstacle & drag circuit)
-  - `02 MECHSTRIKERS` — Robo Soccer (3v3 robot football clashes)
-  - `03 ROBO SUMO` — Robot Combat (Circular ring sumo & ejection)
-  - `04 AUTO-PATH` — Autonomous Line Follower (PID sensory navigation)
-  - `05 AQUA-BLAST` — Aerodynamic Pressurized Water Rocketry
-  - `06 AERO-STRIKE` — FPV Drone Flight & Obstacle Agility
-  - `07 CYBER-INNOVATE` — Next-Gen AI & Robotics Hardware Expo
-
-- **Dual-Profile Registration Portal**:
-  - **School Student** (`Class / Grade V – XII`, Section, Stream, Guardian contact).
-  - **College / University** (`B.Tech, BCA, Diploma, PG`, Department, Year/Sem, Roll Number).
-  - Avatar Selector: Optimus Prime, Bumblebee, Megatron, or custom photo upload / live webcam selfie capture.
-
-- **Interactive 3D Holographic ID Pass**:
-  - **Live Real-time Sync**: Updates instantly as you type into the form.
-  - **Dynamic QR Code**: Generates authentic, scannable QR verification code.
-  - **3D Card Flip**: 3D perspective flip between Front (credentials, avatar, QR) and Back (access policies, schedule, barcode).
-  - **Download & Print**: 1-click **Download HD Pass** (high-resolution PNG via Canvas) and **Print Lanyard Pass** (browser print-optimized layout).
-
-- **Google Sheets / Apps Script Integration**:
-  - Submits registration records in real-time to Google Sheets via Google Apps Script.
-  - Dual-mode local registry backup: export all collected entries directly to Microsoft Excel (`.csv` / `.xlsx`) directly from the browser.
-
----
-
-## 📁 Repository Structure
-
-```text
-├── index.html                 # Main single-page web application
-├── css/
-│   └── cybertron.css          # Transformers design system, HUD styles & mobile queries
-├── js/
-│   ├── app.js                 # State, pass sync, Web Audio synth & Apps Script connection
-│   └── qrcode.js              # Lightweight zero-dependency client QR generator
-├── assets/
-│   ├── images/                # High-res posters, mecha artwork, and avatar icons
-│   └── videos/                # Drone arena, expo grounds, stalls, and line-follower reels
-├── google_apps_script.js      # Copy-paste Google Apps Script backend for Google Sheets
-├── APPSCRIPT_SETUP_GUIDE.md   # Step-by-step setup guide for Google Sheets & Excel
-└── README.md                  # Project documentation
-```
-
----
-
-## 🚀 Deployment & Local Running
-
-### Option A: Local Testing
-Run a simple HTTP server in the root folder:
 ```bash
-python -m http.server 8888
+npm install
+npm run dev
 ```
-Then visit `http://localhost:8888` in any browser.
 
-### Option B: GitHub Pages
-1. Go to repository **Settings** > **Pages**.
-2. Under **Build and deployment**, set source to `Deploy from a branch` > branch: `main` / `root`.
-3. Your site will be live on GitHub Pages with instant HTTPS!
+Without environment variables the app starts in **local demo mode** and stores data in the browser. Any email/password combination can be used. Sign in as `admin@techpulse.test` to exercise organiser approval and check-in.
 
----
+## Connect Supabase
 
-## 📄 License & Credits
-- **Organized by**: Kranti Foundation
-- **Powered by**: 5 Point Education
-- **Design Theme**: Transformers Cybertronian Techno-Fest Aesthetic
+1. Copy `.env.example` to `.env.local` and add the existing Supabase project URL and publishable key.
+2. Install the Supabase CLI and start Docker Desktop for local database development.
+3. Apply `supabase/migrations/202611210001_techpulse_portal.sql` to the dedicated project.
+4. Create an account through the site, then bootstrap its organiser role using the commented SQL statement at the bottom of the migration.
+5. In Supabase Auth, set the production Site URL and allow the GitHub Pages URL as a redirect. Enable email confirmations and configure custom SMTP before launch.
+
+Only the Supabase publishable key belongs in frontend environment variables. Never expose a service-role key.
+
+## Commands
+
+```bash
+npm test          # domain validation tests
+npm run build     # type-check and create dist/
+npm run preview   # serve the production build locally
+```
+
+The Vite build uses relative asset URLs, so `dist/` works at the repository path on GitHub Pages. The build script copies the existing image and video library into the output.
+
+## Main workflows
+
+- Visitor and participant single registration
+- Per-competition participant teams
+- Visitor/participant Excel templates, validation and atomic batch submission
+- Email/password signup, verification and password recovery
+- Optional student claims for coordinator-created registrations
+- Organiser approval/rejection/revocation
+- Approval-gated QR entry passes
+- Camera/manual check-in once per festival day
+- Supabase row-level ownership, staff roles and audit records
+
+Existing Google Apps Script files remain in the repository as a legacy archive. The redesigned portal uses Supabase as its source of truth and does not import browser-local or Google Sheets records automatically.

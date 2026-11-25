@@ -1,0 +1,19 @@
+.hero-copy{min-width:0}
+.hero h1{overflow-wrap:anywhere}
+.media-stage{background:url('/assets/images/cybertron_hero_mech.jpg') center/cover}
+.mobile-break{display:none}
+body{overflow-x:hidden}
+.claim-box{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+.claim-box p{color:var(--muted)}
+.claim-box>div{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:10px}
+@media(max-width:760px){
+  .hero h1{font-size:clamp(1.85rem,9.2vw,2.3rem);letter-spacing:-.04em}
+  .hero-grid{overflow:hidden}
+  .form-page,.form-hero>div:last-child,.form-card,.mode-tabs{min-width:0}
+  .form-hero h1{font-size:clamp(1.65rem,8vw,2rem);overflow-wrap:anywhere}
+  .mobile-break{display:inline}
+  .mode-tabs button{min-width:0;overflow-wrap:anywhere;padding-inline:8px}
+  .mode-tabs{width:100%}
+  .mode-tabs button{font-size:.8rem;white-space:normal;line-height:1.25}
+  .claim-box>div{grid-template-columns:1fr}
+}
